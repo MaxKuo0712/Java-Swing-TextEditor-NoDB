@@ -15,7 +15,7 @@ import tw.Max.Class.myTabbedPane;
 import tw.Max.Class.myTextArea;
 
 public class TextEditor extends JFrame {
-	private JButton addSheet, save, newSave, load, delSheet, test;
+	private JButton addSheet, save, newSave, load, delSheet;
 	private JPanel topPanel;
 	private myTabbedPane tabbedPane;
 	
@@ -52,10 +52,6 @@ public class TextEditor extends JFrame {
 		load = new JButton("Load");
 		topPanel.add(load);
 		
-		// test
-		test = new JButton("test");
-		topPanel.add(test);
-		
 		setSize(640, 480);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -76,9 +72,7 @@ public class TextEditor extends JFrame {
 		delSheet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(isDeleteSheet()) {
-					delSheet();
-				}
+				delSheet();
 			}
 		});
 		
@@ -111,23 +105,6 @@ public class TextEditor extends JFrame {
 				load();
 			}
 		});
-		
-		// test
-		test.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tabbedPane.test();
-			}
-		});
-	}
-	
-	private boolean isDeleteSheet() {
-		int isAgain = JOptionPane.showConfirmDialog(null, "確定要刪除該頁籤？", "刪除頁籤", JOptionPane.YES_NO_OPTION);
-		if (isAgain == 0) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	private void addSheet() {

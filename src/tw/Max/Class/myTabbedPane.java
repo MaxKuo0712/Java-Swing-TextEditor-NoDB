@@ -37,15 +37,21 @@ public class myTabbedPane extends JTabbedPane {
 	}
 	
 	public void delSheet() {
-		if (getTabCount() > 0) {
+		if (getTabCount() > 0 && isDeleteSheet() == true) {
 			sheetNameMap.remove(getTextAreaName());
 			sheetList.remove(getSelectedIndex());
 			remove(getSelectedIndex());
 		}
 	}
 	
-	public void test() {
-		System.out.println(sheetNameMap.toString());
+	private boolean isDeleteSheet() {
+		int isAgain = JOptionPane.showConfirmDialog(null, "確定要刪除該頁籤？", "刪除頁籤", JOptionPane.YES_NO_OPTION);
+		System.out.println(isAgain);
+		if (isAgain == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void addNewTabs() {
@@ -59,6 +65,7 @@ public class myTabbedPane extends JTabbedPane {
 			addTab(sheetName, new JScrollPane(textArea)); // 新增頁籤
 		}
 	}
+	
 	
 	public void addTabs(String sheetName, byte[] text, File fileRoute) {
 		textArea = new myTextArea();
@@ -118,6 +125,7 @@ public class myTabbedPane extends JTabbedPane {
 		return sheetNameMap.get(outputName);
 	}
 	
+	
 	public void newSave() {
 		String outputName = getTextAreaName(); // 取得頁籤名稱
 		String outputText = getTextArea(); // 取得頁籤內容
@@ -168,7 +176,6 @@ public class myTabbedPane extends JTabbedPane {
 		}
 	}
 
-	
 	public void load() {
 		//彈出檔案選擇框
 		JFileChooser chooser = new JFileChooser();
@@ -196,4 +203,5 @@ public class myTabbedPane extends JTabbedPane {
 			}	
 		}
 	}
+
 }
