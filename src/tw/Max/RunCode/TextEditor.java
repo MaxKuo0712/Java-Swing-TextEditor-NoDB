@@ -15,11 +15,9 @@ import tw.Max.Class.myTabbedPane;
 import tw.Max.Class.myTextArea;
 
 public class TextEditor extends JFrame {
-	private JButton addSheet, save, newSave, read, delSheet;
+	private JButton addSheet, save, newSave, load, delSheet, test;
 	private JPanel topPanel;
 	private myTabbedPane tabbedPane;
-	private myTextArea textArea;
-	private String saveType[] = {"txt","java"};
 	
 	public TextEditor() {
 		// 定義視窗
@@ -51,11 +49,12 @@ public class TextEditor extends JFrame {
 		topPanel.add(newSave);
 		
 		// 開啟舊檔
-		read = new JButton("Load");
-		topPanel.add(read);
+		load = new JButton("Load");
+		topPanel.add(load);
 		
-		// textarea
-		textArea = new myTextArea();
+		// test
+		test = new JButton("test");
+		topPanel.add(test);
 		
 		setSize(640, 480);
 		setVisible(true);
@@ -77,7 +76,20 @@ public class TextEditor extends JFrame {
 		delSheet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delSheet();
+				if(isDeleteSheet()) {
+					delSheet();
+				}
+			}
+		});
+		
+		// 存檔
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 沒有頁籤的時候，不能執行儲存
+				if(tabbedPane.getTabSize() > 0) {
+					save();
+				}
 			}
 		});
 	
@@ -92,45 +104,50 @@ public class TextEditor extends JFrame {
 			}
 		});
 		
-		// 存檔
+		// 讀取
+		load.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				load();
+			}
+		});
+		
+		// test
+		test.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tabbedPane.test();
+			}
+		});
+	}
 	
+	private boolean isDeleteSheet() {
+		int isAgain = JOptionPane.showConfirmDialog(null, "確定要刪除該頁籤？", "刪除頁籤", JOptionPane.YES_NO_OPTION);
+		if (isAgain == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private void addSheet() {
-		tabbedPane.addSheet();
+		tabbedPane.addNewTabs();
 	}
 	
 	private void delSheet() {
 		tabbedPane.delSheet();
 	}
 	
+	private void save() {
+		tabbedPane.saveTextArea();
+	}
+	
 	private void newSave() {
-//		String OS = System.getProperty("os.name").toLowerCase(); // 設定預設目錄用：可確認作業系統類別 mac, win, Linux ...
-//		String userName = System.getProperty("user.name"); // 設定預設目錄用：可確認user name
-		String outputName = tabbedPane.getTextAreaName(); // 取得頁籤名稱
-		String outputText = tabbedPane.getTextArea(); // 取得頁籤內容
-		byte[] outputByte = outputText.getBytes(); // 字串轉為byte
-		
-		//彈出檔案選擇框
-		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("另存新檔");
-//		chooser.setCurrentDirectory(new File("/Users/" + userName + "/Desktop/")); // 設定預設目錄為Desktop
-		chooser.setSelectedFile(new File(outputName)); // 預設檔名是頁籤名稱
-		int option = chooser.showSaveDialog(null);
-		
-		if(option == JFileChooser.APPROVE_OPTION){	//假如使用者選擇了儲存
-			File file = chooser.getSelectedFile(); // 取得路徑
-			try {
-				FileOutputStream fos = new FileOutputStream(file.toString().concat(".txt")); // 串流 - 設定存文字檔
-				fos.write(outputByte); // 序列化 寫入
-				fos.flush();
-				fos.close();
-				JOptionPane.showMessageDialog(null, "儲存成功");
-			} catch (Exception e) {
-				System.err.println(e.toString()); // 印出出錯訊息
-				e.printStackTrace(); // 印出出錯位置
-			}	
-		}
+		tabbedPane.newSave();
+	}
+
+	private void load() {
+		tabbedPane.load();
 	}
 	
 	public static void main(String[] args) {
