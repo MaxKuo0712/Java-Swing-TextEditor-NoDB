@@ -8,16 +8,18 @@ import java.io.FileOutputStream;
 import java.util.*;
 import javax.swing.*;
 
+import org.w3c.dom.Text;
+
 public class myTabbedPane extends JTabbedPane {
 	private int textAreaCount = 0;
 	private myTextArea textArea;
-	private HashMap<String, String> sheetNameMap;
-	private LinkedList<JTextArea> sheetList;
+	private HashMap<String, String> tabNameMap;
+	private LinkedList<JTextPane> tabList;
 	
 	public myTabbedPane() {
 		MyListener myListener = new MyListener();
-		sheetNameMap = new HashMap<>();
-		sheetList = new LinkedList<>();
+		tabNameMap = new HashMap<>();
+		tabList = new LinkedList<>();
 		
 		// 視窗頁籤
 		setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -38,8 +40,8 @@ public class myTabbedPane extends JTabbedPane {
 	
 	public void delSheet() {
 		if (getTabCount() > 0 && isDeleteSheet() == true) {
-			sheetNameMap.remove(getTextAreaName());
-			sheetList.remove(getSelectedIndex());
+			tabNameMap.remove(getTextAreaName());
+			tabList.remove(getSelectedIndex());
 			remove(getSelectedIndex());
 		}
 	}
@@ -60,8 +62,8 @@ public class myTabbedPane extends JTabbedPane {
 		if (!(sheetName == null)) {
 			textArea = new myTextArea();
 			textArea.setName(sheetName);
-			sheetList.add(textArea); // LinkedList 取得text用
-			sheetNameMap.put(sheetName, ""); // HashMap 確認有沒有重複檔案名稱用
+			tabList.add(textArea); // LinkedList 取得text用
+			tabNameMap.put(sheetName, ""); // HashMap 確認有沒有重複檔案名稱用
 			addTab(sheetName, new JScrollPane(textArea)); // 新增頁籤
 		}
 	}
@@ -71,8 +73,8 @@ public class myTabbedPane extends JTabbedPane {
 		textArea = new myTextArea();
 		textArea.setText(new String(text));
 		textArea.setName(sheetName);
-		sheetList.add(textArea); // LinkedList 取得text用
-		sheetNameMap.put(sheetName, fileRoute.toString()); // HashMap 確認有沒有重複檔案名稱用
+		tabList.add(textArea); // LinkedList 取得text用
+		tabNameMap.put(sheetName, fileRoute.toString()); // HashMap 確認有沒有重複檔案名稱用
 		addTab(sheetName, new JScrollPane(textArea)); // 新增頁籤
 	}
 	
@@ -98,37 +100,41 @@ public class myTabbedPane extends JTabbedPane {
 	private int checkNewName(String sheetName) {
 		if (sheetName == null) {
 			return 0;
-		} else if (sheetNameMap.get(sheetName) == null) {
+		} else if (tabNameMap.get(sheetName) == null) {
 			return 1;
 		} else {
 			return 2;
 		}
 	}
 	
-	public String getTextArea() {
-		return sheetList.get(getSelectedIndex()).getText();
+	private String getTextAreaText() {
+		return tabList.get(getSelectedIndex()).getText();
 	}
 	
-	public String getTextAreaName() {
-		return sheetList.get(getSelectedIndex()).getName();
+	private String getTextAreaName() {
+		return tabList.get(getSelectedIndex()).getName();
+	}
+	
+	private JTextPane getTextArea() {
+		return tabList.get(getSelectedIndex());
 	}
 	
 	public int getTabSize() {
-		return sheetList.size();
+		return tabList.size();
 	}
 	
 	private void setFileRoute(String outputName, String file) {
-		sheetNameMap.replace(outputName, file);
+		tabNameMap.replace(outputName, file);
 	}
 	
 	private String getFileRoute(String outputName) {
-		return sheetNameMap.get(outputName);
+		return tabNameMap.get(outputName);
 	}
 	
 	
 	public void newSave() {
 		String outputName = getTextAreaName(); // 取得頁籤名稱
-		String outputText = getTextArea(); // 取得頁籤內容
+		String outputText = getTextAreaText(); // 取得頁籤內容
 		byte[] outputByte = outputText.getBytes(); // 字串轉為byte
 
 		//彈出檔案選擇框
@@ -155,7 +161,7 @@ public class myTabbedPane extends JTabbedPane {
 	
 	public void saveTextArea() {
 		String outputName = getTextAreaName(); // 取得頁籤名稱
-		String outputText = getTextArea(); // 取得頁籤內容
+		String outputText = getTextAreaText(); // 取得頁籤內容
 		String fileRoute = getFileRoute(outputName); // 取得該頁籤的路徑
 		byte[] outputByte = outputText.getBytes(); // 字串轉為byte
 		
@@ -187,7 +193,7 @@ public class myTabbedPane extends JTabbedPane {
 				String fileName = chooser.getName(file);
 				fileName = fileName.substring(0, fileName.lastIndexOf(".")); // 取得去除副檔名的名稱
 				
-				if (sheetNameMap.get(fileName) == null) {
+				if (tabNameMap.get(fileName) == null) {
 					FileInputStream fin = new FileInputStream(file); // 串流 - 設定存文字檔
 					byte[] text = new byte[ (int) file.length()];
 					fin.read(text); // 序列化 寫入
@@ -204,4 +210,25 @@ public class myTabbedPane extends JTabbedPane {
 		}
 	}
 
+	public void setTextAreaFont(String item) {
+		JTextPane TextArea = getTextArea();
+		TextArea.setFont(new Font(item, TextArea.getFont().getStyle(), TextArea.getFont().getSize()));
+	}
+	
+	public void setTextAreaFontSize(String item) {
+		JTextPane TextArea = getTextArea();
+		TextArea.setFont(new Font(TextArea.getFont().getFontName(), TextArea.getFont().getStyle(), Integer.parseInt(item)));
+	}
+	
+	public void setTextAreaFontColor(String item) {
+		JTextPane TextArea = getTextArea();
+		if (item == "紅") {
+			TextArea.setForeground(Color.red);
+		} else if (item == "藍") {
+			TextArea.setForeground(Color.blue);
+		} else if (item == "黑") {
+			TextArea.setForeground(Color.black);
+		}
+	}
+	
 }

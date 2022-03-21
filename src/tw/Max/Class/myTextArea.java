@@ -9,7 +9,9 @@ import javax.swing.*;
 
 import tw.Max.Class.myTabbedPane;
 
-public class myTextArea extends JTextArea {
+public class myTextArea extends JTextPane {
+	
+	
 	public myTextArea() {
 		
 	}
