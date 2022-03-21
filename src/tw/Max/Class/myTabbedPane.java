@@ -11,7 +11,6 @@ import javax.swing.*;
 import org.w3c.dom.Text;
 
 public class myTabbedPane extends JTabbedPane {
-	private int textAreaCount = 0;
 	private JTextPane textPane;
 	private HashMap<String, String> tabNameMap;
 	private LinkedList<JTextPane> tabList;
