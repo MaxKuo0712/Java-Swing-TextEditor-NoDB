@@ -1,26 +1,16 @@
 package tw.Max.RunCode;
 
 import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import tw.Max.Class.myComboBox;
 import tw.Max.Class.myTabbedPane;
-import tw.Max.Class.myTextArea;
 
 public class TextEditor extends JFrame {
 	private JMenuBar menuBar;
 	private JButton addSheet, save, newSave, load, delSheet;
-	private myComboBox colorComboBox, fontComboBox, sizeComboBox, fontＷeightComboBox;
+	private JComboBox<String> colorComboBox, fontComboBox, sizeComboBox;
 	private JPanel topPanel, mainPanel, textPanel;
 	private myTabbedPane tabbedPane;
 	
@@ -40,12 +30,11 @@ public class TextEditor extends JFrame {
 		
 		// 放置主畫面上方 => 工具列
 		topPanel = new JPanel(new FlowLayout());
-//		add(topPanel, BorderLayout.NORTH);
 		topPanel.setLayout(new FlowLayout());
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		
 		// 字體調整
-		fontComboBox = new myComboBox();
+		fontComboBox = new JComboBox<String>();
 		fontComboBox.addItem("--字體調整--");
 		fontComboBox.addItem("新細明體");
 		fontComboBox.addItem("標楷體");
@@ -56,7 +45,7 @@ public class TextEditor extends JFrame {
 		topPanel.add(fontComboBox);
 		
 		// 字體大小
-		sizeComboBox = new myComboBox();
+		sizeComboBox = new JComboBox<String>();
 		sizeComboBox.addItem("--字體大小--");
 		sizeComboBox.addItem("9");
 		sizeComboBox.addItem("10");
@@ -67,16 +56,8 @@ public class TextEditor extends JFrame {
 		sizeComboBox.addItem("36");
 		topPanel.add(sizeComboBox);
 		
-		// 字體粗細
-		fontＷeightComboBox = new myComboBox();
-		fontＷeightComboBox.addItem("--字體粗細--");
-		fontＷeightComboBox.addItem("粗");
-		fontＷeightComboBox.addItem("正常");
-		fontＷeightComboBox.addItem("細");
-		topPanel.add(fontＷeightComboBox);
-		
 		// 字體顏色
-		colorComboBox = new myComboBox();
+		colorComboBox = new JComboBox<String>();
 		colorComboBox.addItem("--字體顏色--");
 		colorComboBox.addItem("紅");
 		colorComboBox.addItem("藍");
@@ -90,32 +71,26 @@ public class TextEditor extends JFrame {
 		
 		// 視窗頁籤
 		tabbedPane = new myTabbedPane();
-//		add(tabbedPane, BorderLayout.CENTER);
 		textPanel.add(tabbedPane, BorderLayout.CENTER);
 		
 		// 新增頁籤
 		addSheet = new JButton("New");
-//		topPanel.add(addSheet);	
 		menuBar.add(addSheet);
 		
 		// 刪除頁籤
 		delSheet = new JButton("Delete");
-//		topPanel.add(delSheet);
 		menuBar.add(delSheet);
 
 		// 儲存
 		save = new JButton("Save");
-//		topPanel.add(save);
 		menuBar.add(save);
 		
 		// 另存新檔
 		newSave = new JButton("Save As");
-//		topPanel.add(newSave);
 		menuBar.add(newSave);
 		
 		// 開啟舊檔
 		load = new JButton("Load");
-//		topPanel.add(load);
 		menuBar.add(load);
 		
 		setSize(640, 480);
@@ -130,10 +105,7 @@ public class TextEditor extends JFrame {
 		fontComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				setTextAreaFont();
-//				fontComboBox.getSelectedItem()
-//				System.out.println(fontComboBox.getSelectedItem().toString());
 			}
 		});
 		
@@ -141,17 +113,7 @@ public class TextEditor extends JFrame {
 		sizeComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				setTextAreaFontSize();
-			}
-		});
-		
-		// 字體粗細
-		fontＷeightComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
@@ -159,7 +121,6 @@ public class TextEditor extends JFrame {
 		colorComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				setTextAreaFontColor();
 			}
 		});
@@ -211,41 +172,50 @@ public class TextEditor extends JFrame {
 		});
 	}
 	
+	// 設定字體
 	private void setTextAreaFont() {
 		String font = fontComboBox.getSelectedItem().toString();
-		tabbedPane.setTextAreaFont(font);
+		tabbedPane.setTextPaneFont(font);
 	}
 	
+	// 設定字體大小
 	private void setTextAreaFontSize() {
 		String fontSize = sizeComboBox.getSelectedItem().toString();
-		tabbedPane.setTextAreaFontSize(fontSize);
+		tabbedPane.setTextPaneFontSize(fontSize);
 	}
 	
+	// 設定字體顏色
 	private void setTextAreaFontColor() {
 		String fontColor = colorComboBox.getSelectedItem().toString();
-		tabbedPane.setTextAreaFontColor(fontColor);
+		tabbedPane.setTextPaneFontColor(fontColor);
 	}
 	
+	// 新增頁籤
 	private void addSheet() {
 		tabbedPane.addNewTabs();
 	}
 	
+	// 刪除頁籤
 	private void delSheet() {
 		tabbedPane.delSheet();
 	}
 	
+	// 儲存
 	private void save() {
-		tabbedPane.saveTextArea();
+		tabbedPane.saveTextPane();
 	}
 	
+	// 另存新檔
 	private void newSave() {
 		tabbedPane.newSave();
 	}
 
+	// 讀取
 	private void load() {
 		tabbedPane.load();
 	}
 	
+	// 程式進入點
 	public static void main(String[] args) {
 		new TextEditor();
 	}
