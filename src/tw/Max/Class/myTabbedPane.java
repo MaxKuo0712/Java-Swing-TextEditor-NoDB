@@ -212,10 +212,24 @@ public class myTabbedPane extends JTabbedPane {
 	
 	// 設定字體，有頁籤才能執行
 	public void setTextPaneFont(String item) {
+		JTextPane TextPane = getTextPane();
+		String textFont = null;
 		if (tabList.size() > 0) {
-			JTextPane TextPane = getTextPane();
-			TextPane.setFont(new Font(item, TextPane.getFont().getStyle(), TextPane.getFont().getSize()));
+			if (item == "蘋方") {
+				textFont = "PingFang";
+			} else if (item == "黑體") {
+				textFont = "STHeiti";
+			} else if (item == "楷體") {
+				textFont = "STKaiti";
+			} else if (item == "儷黑 Pro") {
+				textFont = "LiHei Pro";
+			} else if (item == "儷宋 Pro") {
+				textFont = "LiSong Pro";
+			} else {
+				textFont = item;
+			}
 		}
+		TextPane.setFont(new Font(textFont, TextPane.getFont().getStyle(), TextPane.getFont().getSize()));
 	}
 	
 	// 設定字體大小，有頁籤才能執行

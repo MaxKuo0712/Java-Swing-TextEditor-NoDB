@@ -36,9 +36,11 @@ public class TextEditor extends JFrame {
 		// 字體調整
 		fontComboBox = new JComboBox<String>();
 		fontComboBox.addItem("--字體調整--");
-		fontComboBox.addItem("新細明體");
-		fontComboBox.addItem("標楷體");
-		fontComboBox.addItem("細明體");
+		fontComboBox.addItem("蘋方");
+		fontComboBox.addItem("黑體");
+		fontComboBox.addItem("楷體");
+		fontComboBox.addItem("儷黑 Pro");
+		fontComboBox.addItem("儷宋 Pro");
 		fontComboBox.addItem("Arial");
 		fontComboBox.addItem("Calibri");
 		fontComboBox.addItem("Lucida Grande");
